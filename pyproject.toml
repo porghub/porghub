@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "porghub"
+version = "0.1.0"
+description = ""
+authors = ["Michal Janočko <michal@janocko.com>"]
+license = "AGPL-3.0"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+tortoise-orm = {extras = ["aiosqlite"], version = "^0.19.1"}
+fastapi = {extras = ["all"], version = "^0.78.0"}
+Jinja2 = "^3.1.2"
+
+[tool.poetry.dev-dependencies]
+black = "^22.3.0"
+aerich = "^0.6.3"
+isort = "^5.10.1"
+
+
+[tool.aerich]
+tortoise_orm = "db.TORTOISE_ORM"
+location = "./migrations"
+src_folder = "./."
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
