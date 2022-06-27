@@ -1,0 +1,54 @@
+{% extends "page.html" %}
+{% block content %}
+  <script>
+    function updatePreview(filePicker, preview) {
+      const memePreview = document.getElementById('meme-preview')
+      const files = filePicker.files[0]
+      if (files) {
+        const fileReader = new FileReader()
+        fileReader.readAsDataURL(files)
+        fileReader.addEventListener('load', function () {
+          preview.src = this.result
+        })
+        memePreview.style.display = 'block'
+      } else {
+        memePreview.style.display = 'none'
+      }
+    }
+  </script>
+
+  <p class="gray">
+    Tady můžete anonymně submitnout svoji tvorbu popř. dodat credits
+  </p>
+  <form
+    action="sent"
+    method="post"
+    enctype="multipart/form-data"
+    x-data
+    x-init="updatePreview($refs.filePicker, $refs.preview)"
+  >
+    <input type="text" name="credit" placeholder="Dobrovolné credits" />
+    <input
+      type="file"
+      id="meme"
+      name="media"
+      accept="image/*"
+      x-ref="filePicker"
+      x-on:change="updatePreview($event.target, $refs.preview)"
+    />
+    <label for="meme">
+      <img src="/static/paperclip.svg" alt="Attachment" class="icon" />
+      <span>&nbsp;&nbsp;Vybrat materiál</span>
+    </label>
+    <img src="" alt="" x-ref="preview" id="meme-preview" x-cloak />
+    <input type="submit" value="Odeslat" />
+  </form>
+  <div id="links">
+    <p>
+      <a href="/oldies-but-goldies">
+        🏺 Relikvie z <span id="fb">facebooku</span>
+      </a>
+    </p>
+  </div>
+{% endblock %}
+

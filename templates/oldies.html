@@ -1,0 +1,95 @@
+{% extends "page.html" %}
+{% block content %}
+  <script>
+    document.addEventListener('alpine:init', () => {
+      Alpine.data('posts', () => ({
+        pictures: [[]],
+        day: 0,
+        img: null,
+        init() {
+          this.pictures = Array
+            .from(document.getElementsByClassName('img'))
+            .map($ => $.src)
+        },
+        setPicture(index) {
+          this.img = index
+        },
+        closePreview() {
+          this.img = null
+        }
+      }))
+    })
+  </script>
+
+  <main x-data="posts">
+    <div id="control-preload">
+      <img src="left.svg" alt="" />
+      <img src="right.svg" alt="" />
+      <img src="close.svg" alt="" />
+    </div>
+
+    <div id="links">
+      <p><a href="#porghub">→ PORGhub</a></p>
+      <p><a href="#alcohol">→ porg memes for alcoholic teens</a></p>
+    </div>
+
+    <!-- Meme preview -->
+    <div
+      x-cloak
+      id="preview"
+      x-show="img !== null"
+      x-trap.inert.noscroll="img !== null"
+      x-transition
+      @dragend="closePreview"
+      @keyup.document.escape="closePreview"
+      @keyup.document.left="img > 0 && img--"
+      @keyup.document.right="img < pictures[day].length - 1 && img++"
+    >
+      <img src="/static/close.svg" @click="closePreview" class="control">
+
+      <div id="box" @click.outside="closePreview">
+        <span class="control">
+          <img src="/static/left.svg" @click="img--" x-show="img > 0">
+        </span>
+        <img id="picture" :src="pictures[img]">
+        <span class="control">
+          <img src="/static/right.svg" @click="img++" x-show="img < pictures.length - 1">
+        </span>
+      </div>
+    </div>
+
+    <h2 id="porghub">
+      PORGhub
+      <a href="https://www.facebook.com/dankporgmemes">
+        <img src="/static/link.svg" alt="Link" class="icon small">
+      </a>
+    </h2>
+
+    <div class="oldies">
+      {% for meme in porghub %}
+        <img
+          src="{{ meme }}"
+          class="img"
+          x-on:click="setPicture({{ loop.index - 1 }})"
+        >
+      {% endfor %}
+    </div>
+
+    <h2 id="alcohol">
+      porg memes for alcoholic teens
+      <a href="https://www.facebook.com/notaseliteasitseems">
+        <img src="/static/link.svg" alt="Link" class="icon small">
+      </a>
+    </h2>
+
+    <div class="oldies">
+      {% for meme in alcohol %}
+        <img
+          src="{{ meme }}"
+          class="img"
+          x-on:click="setPicture({{ loop.index - 1 + porghub|length }})"
+        >
+      {% endfor %}
+    </div>
+  </main>
+{% endblock %}

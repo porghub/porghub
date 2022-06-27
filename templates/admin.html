@@ -1,0 +1,23 @@
+{% extends "page.html" %}
+{% block content %}
+  {% for meme in memes %}
+    <div class="meme">
+      {% if meme.credit is not none %}
+        <p>{{ meme.credit }}</p>
+      {% endif %}
+
+      <img
+        src="/attachments/{{ meme.image }}.png"
+        alt=""
+        id="meme-preview"
+        loading="lazy"
+      />
+
+      <div class="icons">
+        <a href="/attachments/{{ meme.image }}.png" download="{{ meme.image }}.png">
+          <img src="/static/download.svg" alt="Download meme" class="icon" />
+        </a>
+      </div>
+    </div>
+  {% endfor %}
+{% endblock %}
