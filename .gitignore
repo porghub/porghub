@@ -1,5 +1,6 @@
 # Drbna
 uploads/*
+attachments/*
 !**/.gitkeep
 credits.db*
 
