@@ -43,7 +43,7 @@
       @dragend="closePreview"
       @keyup.document.escape="closePreview"
       @keyup.document.left="img > 0 && img--"
-      @keyup.document.right="img < pictures[day].length - 1 && img++"
+      @keyup.document.right="img < pictures.length - 1 && img++"
     >
       <img src="/static/close.svg" @click="closePreview" class="control">
 
